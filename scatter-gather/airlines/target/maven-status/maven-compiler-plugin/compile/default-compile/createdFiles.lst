@@ -1,0 +1,5 @@
+com/example/model/FlightSearchResponse.class
+com/example/model/ObjectUtil.class
+com/example/model/FlightSchedule.class
+com/example/model/FlightSearchRequest.class
+com/example/service/AirlineService.class
