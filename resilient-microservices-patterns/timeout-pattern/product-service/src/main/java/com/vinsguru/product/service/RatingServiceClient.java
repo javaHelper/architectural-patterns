@@ -12,8 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.vinsguru.dto.ProductRatingDto;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @Service
 public class RatingServiceClient {
@@ -24,8 +23,7 @@ public class RatingServiceClient {
     private String ratingService;
 
     
-    @CircuitBreaker(name = "ratingService", fallbackMethod = "getDefault")
-    @Retry(name = "ratingService", fallbackMethod = "getDefault")
+    @TimeLimiter(name = "ratingService", fallbackMethod = "getDefault")
     public CompletionStage<ProductRatingDto> getProductRatingDto(int productId){
         Supplier<ProductRatingDto> supplier = () ->
             this.restTemplate.getForEntity(this.ratingService + productId, ProductRatingDto.class)
@@ -33,8 +31,8 @@ public class RatingServiceClient {
         return CompletableFuture.supplyAsync(supplier);
     }
 
-    private CompletionStage<ProductRatingDto> getDefault(int productId, HttpClientErrorException throwable){
+    private CompletionStage<ProductRatingDto> getDefault(int productId, Throwable throwable){
+    	System.out.println("Fallback called");
         return CompletableFuture.supplyAsync(() -> ProductRatingDto.of(0, Collections.emptyList()));
     }
-
 }
