@@ -34,6 +34,7 @@ public class RatingServiceClient {
     }
 
     private CompletionStage<ProductRatingDto> getDefault(int productId, HttpClientErrorException throwable){
+    	System.out.println("Fallback called");
         return CompletableFuture.supplyAsync(() -> ProductRatingDto.of(0, Collections.emptyList()));
     }
 

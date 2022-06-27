@@ -26,6 +26,7 @@ public class RatingController {
 
     private ResponseEntity<ProductRatingDto> failRandomly(ProductRatingDto productRatingDto){
         int random = ThreadLocalRandom.current().nextInt(1, 4);
+        System.out.println("== Ramdom Delay :"+random);
         if(random < 2){
             return ResponseEntity.status(500).build();
         }else if(random < 3){
